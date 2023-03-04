@@ -3,6 +3,7 @@ import argparse
 import asyncio
 import json
 import os
+import re
 from os import environ as env
 import subprocess
 import time
@@ -33,6 +34,7 @@ MI_PASS = ""
 OPENAI_API_KEY = ""
 KEY_WORD = "请"
 PROMPT = "请用100字以内，用中文回答"
+PATTERN = re.compile("[\s\"']")
 
 
 ### HELP FUNCTION ###
@@ -101,14 +103,14 @@ class ChatGPTBot:
 
 class MiGPT:
     def __init__(
-        self,
-        hardware,
-        cookie="",
-        use_command=False,
-        mute_xiaoai=False,
-        use_gpt3=False,
-        use_chatgpt_api=False,
-        verbose=False,
+            self,
+            hardware,
+            cookie="",
+            use_command=False,
+            mute_xiaoai=False,
+            use_gpt3=False,
+            use_chatgpt_api=False,
+            verbose=False,
     ):
         self.mi_token_home = Path.home() / ".mi.token"
         self.hardware = hardware
@@ -221,7 +223,7 @@ class MiGPT:
             subprocess.check_output(["micli", self.tts_command, value])
 
     def _normalize(self, message):
-        message = message.replace("\n", "")
+        message = PATTERN.sub('/', message)
         return message
 
     async def ask_gpt(self, query):
@@ -270,8 +272,8 @@ class MiGPT:
         playing_info = await self.mina_service.player_get_status(self.device_id)
         # WTF xiaomi api
         is_playing = (
-            json.loads(playing_info.get("data", {}).get("info", "{}")).get("status", -1)
-            == 1
+                json.loads(playing_info.get("data", {}).get("info", "{}")).get("status", -1)
+                == 1
         )
         return is_playing
 
@@ -426,7 +428,6 @@ if __name__ == "__main__":
                 config = json.load(f)
         else:
             raise Exception(f"{options.config} doesn't exist")
-
 
     # update options with config
     for key, value in config.items():
