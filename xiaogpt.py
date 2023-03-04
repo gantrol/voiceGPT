@@ -31,8 +31,8 @@ HARDWARE_COMMAND_DICT = {
 MI_USER = ""
 MI_PASS = ""
 OPENAI_API_KEY = ""
-KEY_WORD = "帮我"
-PROMPT = "请用100字以内回答"
+KEY_WORD = "请"
+PROMPT = "请用100字以内，用中文回答"
 
 
 ### HELP FUNCTION ###
@@ -202,6 +202,7 @@ class MiGPT:
 
     def get_last_timestamp_and_record(self, data):
         if d := data.get("data"):
+
             records = json.loads(d).get("records")
             if not records:
                 return 0, None
@@ -220,9 +221,7 @@ class MiGPT:
             subprocess.check_output(["micli", self.tts_command, value])
 
     def _normalize(self, message):
-        message = message.replace(" ", "，")
-        message = message.replace("\n", "，")
-        message = message.replace('"', "，")
+        message = message.replace("\n", "")
         return message
 
     async def ask_gpt(self, query):
