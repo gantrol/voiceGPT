@@ -33,9 +33,13 @@ MI_USER = ""
 MI_PASS = ""
 OPENAI_API_KEY = ""
 KEY_WORD = "请"
-PROMPT = "请用100字以内，用中文回答"
-PATTERN = re.compile("[\s\"']")
-
+PROMPT = "请用100字以内回答"
+# 将.,?等英文断句符号后面的空格换成 ''
+PUNCT_SPACE_REGEX = re.compile(r"(?<=[.,?!])\s")
+PUNCT_SPACE_REGEX_SPACE = ""
+# 去除多余的空格、换行或回车，还有双引号与单引号
+WHITE_SPACE_QUOTE_REGEX = re.compile(r"[\s\n\r\"']")
+WHITE_SPACE_QUOTE_REGEX_SPACE = "/"
 
 ### HELP FUNCTION ###
 def parse_cookie_string(cookie_string):
@@ -223,7 +227,8 @@ class MiGPT:
             subprocess.check_output(["micli", self.tts_command, value])
 
     def _normalize(self, message):
-        message = PATTERN.sub('/', message)
+        message = PUNCT_SPACE_REGEX.sub(PUNCT_SPACE_REGEX_SPACE, message)
+        message = WHITE_SPACE_QUOTE_REGEX.sub(WHITE_SPACE_QUOTE_REGEX_SPACE, message)
         return message
 
     async def ask_gpt(self, query):
@@ -263,7 +268,8 @@ class MiGPT:
         if message := data.get("message", ""):
             self.conversation_id = data.get("conversation_id")
             self.parent_id = data.get("parent_id")
-            # xiaoai tts did not support space
+            # Tofix: xiaoai tts did not support space
+            print("以下是处理后的回答: " + message)
             message = self._normalize(message)
             return message
         return ""

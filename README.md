@@ -1,4 +1,10 @@
 # xiaogpt
+
+自用，踩坑。
+
+1. 英文阅读。已经修改部分代码，目前空格不会停顿太长，也有连读；
+2. 其他待明天补充
+
 Play ChatGPT with Xiaomi AI Speaker
 
 ![image](https://user-images.githubusercontent.com/15976103/220028375-c193a859-48a1-4270-95b6-ef540e54a621.png)
