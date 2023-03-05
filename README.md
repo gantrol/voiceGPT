@@ -3,7 +3,8 @@
 自用，踩坑。
 
 1. 英文阅读。已经修改部分代码，目前空格不会停顿太长，也有连读；
-2. 其他待明天补充
+2. 系统建议用苹果或linux，WSL可能可以，但我不想搞；
+3. 可以直接用 revChatGPT  `$HOME/.config/revChatGPT/config.json`，而且根据revChatGPT的配置文件，完全可以在同一个会话下聊，应该需要进一步改代码。
 
 Play ChatGPT with Xiaomi AI Speaker
 
